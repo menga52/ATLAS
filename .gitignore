@@ -4,3 +4,5 @@
 .egg-info
 .txt
 .json
+/build
+/ATLAS.egg-info

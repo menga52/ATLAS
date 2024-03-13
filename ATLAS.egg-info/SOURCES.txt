@@ -6,9 +6,11 @@ ATLAS.egg-info/SOURCES.txt
 ATLAS.egg-info/dependency_links.txt
 ATLAS.egg-info/not-zip-safe
 ATLAS.egg-info/top_level.txt
+ATLAS/Models/Butane.py
 ATLAS/Models/ButaneParameters.py
 ATLAS/Models/Halfmoon.py
 ATLAS/Models/HalfmoonParameters.py
+ATLAS/Models/Model.py
 ATLAS/Models/Parameters.py
 ATLAS/Models/Peanut.py
 ATLAS/Models/PeanutParameters.py

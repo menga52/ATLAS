@@ -1,4 +1,6 @@
-
+#TODO: omit?
+def sqrt(x):
+	return x**0.5
 
 class Model:
 	def __init__(self):
@@ -6,7 +8,7 @@ class Model:
 	
 	def init(self):
 		# create parameters object
-		self.createParameters()
+		parameters = self.createParameters()
 	
 	def learn(self):
 		# initial learning

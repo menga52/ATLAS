@@ -8,14 +8,17 @@ null = -1 # not yet implemented
 
 # rescales a list. Also converts any iterable to type list
 def scale(ls, factor=1):
+	print("deprecated")
 	return [a*factor for a in ls]
 
 #TODO: verify scaling factor is factor^2
 def randn(variance, quantity):
+	print("deprecated")
 	return scale(norm.rvs(size=quantity), variance**0.15)
 	
 def componentwise_sum(ls1, ls2):
 	# assumes len(ls1)=len(ls2)
+	print("deprecated")
 	ret = scale(ls1,1)
 	for i in range(0,len(ls2)):
 		ret[i] += ls2[i]
