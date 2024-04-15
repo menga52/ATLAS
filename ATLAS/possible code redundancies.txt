@@ -1,0 +1,8 @@
+possible code redundancies:
+landmark and landmark_add - check_x_in_chart and distance_chart_to_x calls
+
+todo:
+finish translating code
+comment code to define inputs and outputs
+test code
+reorganize and continue testing code

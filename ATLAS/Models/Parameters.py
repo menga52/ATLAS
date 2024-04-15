@@ -1,6 +1,7 @@
 from scipy.stats import norm
 import numpy as np
 from math import *
+from ATLAS.Simulator import simEuler_one_traj, simEuler, simEuler_par
 
 pi = 3.14159265
 
@@ -194,9 +195,9 @@ class Parameters:
 	
 	def setup_simulators(self):
 		# simulators
-		self.simulator_one = null
-		self.simulator_no_par = null
-		self.simulator_par = null
+		self.simulator_one = simEuler_one_traj
+		self.simulator_no_par = simEuler
+		self.simulator_par = simEuler_par
 
 	def setup_MSM_parameter(self):
 		# self.MSM_parameter = MSMParameters(1,1*10**6,10*self.dt)

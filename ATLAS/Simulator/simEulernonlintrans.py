@@ -1,21 +1,15 @@
 import numpy as np
-import numbers
-# from joblib import Parallel, delayed
-import threading
-seed = 1
-default_rng = np.random.default_rng(seed)
 
-# for use if unknown whether A or B are scalars
-def mult(A,B):
-	if isinstance(A, numbers.Number) or isinstance(B,numbers.Number):
-		return A*B
-	return A @ B
+# TODO: find seed
+default_rng = np.default_rng(seed)
 
-def simEuler_par(RHS_parameter, Sim_parameter,rng=-1):
+def simEulernonlintrans(RHS_parameter,Sim_parameter,rng=-1,verbose=False):
 	if rng==-1:
 		rng = default_rng
 	diffusion = RHS_parameter["diffusion"]
 	drift = RHS_parameter["drift"]
+	nonlin_trans = RHS_parameter["nonlin_trans"]
+	nonlin_trans_inf = RHS_parameter["nonlin_trans_inv"]
 	D = RHS_parameter["D"]
 	UpperBound = RHS_parameter["UpperBound"]
 	LowerBound = RHS_parameter["LowerBound"]
@@ -27,31 +21,28 @@ def simEuler_par(RHS_parameter, Sim_parameter,rng=-1):
 	t_span = range(0,T_max+dt,dt)
 	tN = len(t_span)-1
 	
-	X = np.zeros(N,D,tN*N+1)
+	Polar = np.zeros((N,D,tN+1))
+	X = np.zeros((N,D,tN+1))
 	sqrtdt = dt**0.5
 	
-	def update(j):
-		X_j = np.zeros(D,tN+1)
-		X_j[:,0] = X_int
-		r_store = rng.standard_normal((D,tN))
-		for i in range(0,tN):
-			Current = X_j[:,i]
-			cur_r_store = r_store[:,i]
-			drift_current = drift(Current)*dt
-			diffusion_current = mult(mult(diffusion(Current),cur_r_store),sqrtdt)
+	r_store = rng.standard_normal((D,tN*N))
+	for j in range(N):
+		Polar_j = np.zeros((D,tN+1))
+		X_j = np.zeros((D,tN+1))
+		X_j[:,0] = np.transpose(X_int)
+		Polar_j[:,0] = nonlin_trans_inv(np.transpose(X_int))
+		for i in range(tN):
+			Current = Polar_j[:,i]
+			cur_r_store = r_store[:,(j-1)*tN+i]
+			drift_current = drift(Current) * dt
+			diffusion_current = diffusion(Current) @ cur_r_store * sqrtdt
 			
 			Next = Current + drift_current + diffusion_current
-			X_j[:,i+1] = Next
+			Polar_j[:,i+1] = Next
+			X_j[:,i+1] = nonlin_trans(Next)
 		
+		Polar[j,:,:] = Polar_j
 		X[j,:,:] = X_j
-	
-	# Parallel()(delayed(update)(j) for j in range(0,N))
-	threads = np.empty(N,dtype=object)
-	for j in range(N):
-		threads[j] = threading.Thread(target=update,args=[j])
-		threads[j].start()
-	for i in range(N):
-		threads[j].join()
 	
 	Tr_store = np.zeros((1,tN+1))
 	Cov_store = np.empty(tN+1,dtype=object) #todo - find out dtype
@@ -72,12 +63,4 @@ def simEuler_par(RHS_parameter, Sim_parameter,rng=-1):
 	data["LowerBound"] = LowerBound
 	data["UpperBound"] = UpperBound
 	return data, Cov_store, Mean_store
-	
-	
-	
-			
-			
-			
-			
-			
-			
+		

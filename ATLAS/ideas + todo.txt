@@ -1,0 +1,13 @@
+possible code redundancy:
+landmark and landmark_add - check_x_in_chart and distance_chart_to_x calls
+
+plan:
+finish sequence diagrams
+finish translating
+comment code - inputs and outputs of functions
+test and debug code
+improve variable names and continue testing
+reorganize codebase and continue testing
+
+
+get example dataset

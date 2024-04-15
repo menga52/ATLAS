@@ -1,6 +1,7 @@
 from scipy.stats import norm
 import numpy as np
 from math import *
+from ATLAS.Simulator import simEuler_one_traj, simEuler, simEuler_par
 
 pi = 3.14159265
 
@@ -8,14 +9,17 @@ null = -1 # not yet implemented
 
 # rescales a list. Also converts any iterable to type list
 def scale(ls, factor=1):
+	print("deprecated")
 	return [a*factor for a in ls]
 
 #TODO: verify scaling factor is factor^2
 def randn(variance, quantity):
+	print("deprecated")
 	return scale(norm.rvs(size=quantity), variance**0.15)
 	
 def componentwise_sum(ls1, ls2):
 	# assumes len(ls1)=len(ls2)
+	print("deprecated")
 	ret = scale(ls1,1)
 	for i in range(0,len(ls2)):
 		ret[i] += ls2[i]
@@ -191,9 +195,9 @@ class Parameters:
 	
 	def setup_simulators(self):
 		# simulators
-		self.simulator_one = null
-		self.simulator_no_par = null
-		self.simulator_par = null
+		self.simulator_one = simEuler_one_traj
+		self.simulator_no_par = simEuler
+		self.simulator_par = simEuler_par
 
 	def setup_MSM_parameter(self):
 		# self.MSM_parameter = MSMParameters(1,1*10**6,10*self.dt)
