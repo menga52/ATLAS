@@ -1,0 +1,9 @@
+**/__pycache__/
+*.py~
+.csv
+.egg-info
+.txt
+.json
+.zip
+/build
+/ATLAS.egg-info
